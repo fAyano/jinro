@@ -2,7 +2,7 @@
 //  LastViewController.swift
 //  928
 //
-//  Created by 藤澤彩乃 on 2021/09/29.
+//  2021/09/29.
 //
 
 import UIKit
