@@ -2,7 +2,7 @@
 //  CharacterViewController.swift
 //  928
 //
-//  Created by 藤澤彩乃 on 2021/10/26.
+//  2021/10/26.
 //
 
 import UIKit
