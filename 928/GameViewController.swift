@@ -62,30 +62,29 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         var a:Int = 0
         
-        //背景 0→壁, 1→動ける範囲, 2→プレイヤー, 3→敵, 4->プレイヤー2
+        //背景 0→壁, 1→動ける範囲, 2→プレイヤー, 3→プレイヤー2, 4→プレイヤー3, 5→池,
         number = [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,
-                  0,2,1,1,0, 1,1,1,1,1, 1,1,1,1,0, 3,1,0,
-                  0,1,1,1,0, 1,1,1,1,1, 1,1,1,1,0, 1,1,0,
-                  0,1,1,1,0, 1,1,1,1,1, 1,1,1,1,0, 1,1,0,
-                  0,1,1,1,0, 1,1,1,1,1, 1,1,1,1,0, 1,1,0,
+                  0,2,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 3,1,0,
+                  0,1,1,1,1, 0,0,0,0,0, 1,1,1,1,1, 1,1,0,
+                  0,1,1,1,1, 0,5,5,5,0, 1,1,0,0,0, 1,1,0,
+                  0,1,1,1,1, 0,5,5,5,0, 1,0,0,0,0, 1,1,0,
                   
-                  0,1,1,1,0, 1,1,0,0,0, 1,1,1,1,0, 1,1,0,
-                  0,1,1,1,0, 1,1,0,1,1, 1,1,1,1,0, 1,1,0,
-                  0,1,1,1,0, 1,1,0,1,1, 1,1,1,1,0, 1,1,0,
-                  0,1,1,1,0, 0,0,0,1,1, 1,1,1,1,0, 1,1,0,
-                  0,1,1,1,1, 1,1,1,1,1, 1,1,0,0,0, 1,1,0,
-                  
-                  0,1,1,1,1, 1,1,1,1,1, 1,1,0,1,1, 1,1,0,
-                  0,0,0,0,0, 0,0,1,1,1, 1,1,0,1,1, 1,1,0,
-                  0,1,1,1,1, 1,0,1,1,1, 1,1,0,1,1, 1,1,0,
-                  0,1,1,1,1, 1,0,1,1,1, 1,1,0,1,1, 1,1,0,
-                  0,1,1,1,1, 1,0,0,0,1, 1,1,1,1,1, 1,1,0,
-                  
+                  0,1,1,1,1, 0,0,0,5,0, 1,0,0,0,0, 1,1,0,
+                  0,1,1,1,1, 1,1,1,0,0, 1,1,0,0,0, 1,1,0,
                   0,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,0,
-                  0,4,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,0,
+                  0,1,1,1,1, 1,1,1,0,0, 1,1,1,1,1, 1,1,0,
+                  0,1,1,1,1, 1,1,1,0,5, 0,0,1,1,1, 1,1,0,
+                  
+                  0,1,1,1,1, 1,1,1,0,5, 5,0,1,1,1, 1,1,0,
+                  0,1,1,1,1, 1,1,1,0,5, 5,0,1,1,1, 1,1,0,
+                  0,1,1,1,1, 1,1,1,0,5, 5,0,1,1,1, 1,1,0,
+                  0,1,1,1,0, 0,0,1,0,0, 0,0,1,1,1, 1,1,0,
+                  0,1,1,0,0, 0,0,1,1,1, 1,1,1,1,1, 1,1,0,
+                  
+                  0,1,1,0,0, 0,0,1,1,1, 1,1,1,1,1, 1,1,0,
+                  0,4,1,1,0, 0,0,1,1,1, 1,1,1,1,1, 1,1,0,
                   0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,
                 ]
-
         for x in 1...18 {
             for y in 1...18 {
                 let label = UILabel()
@@ -219,12 +218,126 @@ class GameViewController: UIViewController {
     func chooseColor(a:Int){
         if(number[a]==0){
             //labelArray[a].backgroundColor = UIColor.black
-            labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "wall")!)
-            labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "wall2")!)
+            if(a==0){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_upperleft")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_upperleft2")!)
+            }else if(a==17){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_lowerleft")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_lowerleft2")!)
+            }else if(a==306){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_upperright")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_upperright2")!)
+            }else if(a==323){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_lowerright")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_lowerright2")!)
+            }else if(a%18==0){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_top")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_top2")!)
+            }else if(a%18==17){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_bottom")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_bottom2")!)
+            }else if(a>0&&a<18){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_left")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_left2")!)
+            }else if(a>305&&a<324){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_right")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_right2")!)
+            }else if(a>=238&&a<=240){
+            //テント1
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-235+3*(a-238))")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-235+3*(a-238))_2")!)
+            }else if(a>=256&&a<=258){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-252+3*(a-256))")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-252+3*(a-256))_2")!)
+            }else if(a>=274&&a<=276){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-269+3*(a-274))")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-269+3*(a-274))_2")!)
+            }else if(a>=292&&a<=294){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-286+3*(a-292))")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-286+3*(a-292))_2")!)
+            }else if(a==255){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent1")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent1_2")!)
+            }else if(a==273){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent2")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent2_2")!)
+            //テント2
+            }else if(a>=66&&a<=69){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-63+3*(a-66))")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-63+3*(a-66))_2")!)
+            }else if(a>=84&&a<=87){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-80+3*(a-84))")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-80+3*(a-84))_2")!)
+            }else if(a>=102&&a<=105){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-97+3*(a-102))")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-97+3*(a-102))_2")!)
+            }else if(a>=120&&a<=123){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-114+3*(a-120))")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-114+3*(a-120))_2")!)
+            }else if(a==83){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent1")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent1_2")!)
+            }else if(a==101){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent2")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent2_2")!)
+            //池
+            }else if(a==41){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_upperleft")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_upperleft2")!)
+            }else if(a>=42&&a<=44||a==172){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_left")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_left2")!)
+            }else if(a==95||a==242){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_upperright")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_upperright2")!)
+            }else if(a==96||a==97||a==243||a==244){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_right")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_right2")!)
+            }else if(a==45||a==173){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_lowerleft")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_lowerleft2")!)
+            }else if(a==245){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_lowerright")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_lowerright2")!)
+            }else if(a%18==5||a%18==8){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_top")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_top2")!)
+            }else if(a%18==9||a%18==11){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_bottom")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_bottom2")!)
+            }else{
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_rf")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_rf2")!)
+            }
+        }else if(number[a]==5){
+            labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake")!)
+            labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake2")!)
         }else{
             number[a]=1
-            labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "floor")!)
-            labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "floor")!)
+            //橋
+            if(a>=133&&a<=136){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "bridge")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "bridge2")!)
+            //地面
+            }else if(a==138){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground_upperleft")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground_upperleft2")!)
+            }else if(a==156||a==211){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground_upperright")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground_upperright2")!)
+            }else if(a==141){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground_lowerleft")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground_lowerleft2")!)
+            }else if(a==213){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground_lowerright")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground_lowerright2")!)
+            }else if(a>=139&&a<=140||a>=157&&a<=159||a>=175&&a<=177||a>=193&&a<=195||a>=211&&a<=212){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground2")!)
+            }else{
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass2")!)
+            }
         }
     }
     func chooseColor2(a:Int){
