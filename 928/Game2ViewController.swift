@@ -65,27 +65,27 @@ class Game2ViewController: UIViewController {
         super.viewDidLoad()
         var a:Int = 0
         
-        //背景 0→壁, 1→動ける範囲, 2→プレイヤー, 3→プレイヤー2, 4→プレイヤー3, 5→池,
+        //背景 0→壁, 1→動ける範囲, 2→プレイヤー, 3→プレイヤー2, 4→プレイヤー3, 5→池, 6→テント, 7→物干し竿
         number = [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,
                   0,2,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 3,1,0,
                   0,1,1,1,1, 0,0,0,0,0, 1,1,1,1,1, 1,1,0,
-                  0,1,1,1,1, 0,5,5,5,0, 1,1,0,0,0, 1,1,0,
-                  0,1,1,1,1, 0,5,5,5,0, 1,0,0,0,0, 1,1,0,
+                  0,1,1,1,1, 0,5,5,5,0, 1,1,6,6,6, 1,1,0,
+                  0,1,1,1,1, 0,5,5,5,0, 1,6,6,6,6, 1,1,0,
                   
-                  0,1,1,1,1, 0,0,0,5,0, 1,0,0,0,0, 1,1,0,
-                  0,1,1,1,1, 1,1,1,0,0, 1,1,0,0,0, 1,1,0,
+                  0,1,1,1,1, 0,0,0,5,0, 1,6,6,6,6, 1,1,0,
+                  0,1,1,1,1, 1,1,1,0,0, 1,1,6,6,6, 1,1,0,
                   0,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,0,
                   0,1,1,1,1, 1,1,1,0,0, 1,1,1,1,1, 1,1,0,
                   0,1,1,1,1, 1,1,1,0,5, 0,0,1,1,1, 1,1,0,
                   
                   0,1,1,1,1, 1,1,1,0,5, 5,0,1,1,1, 1,1,0,
-                  0,1,1,1,1, 1,1,1,0,5, 5,0,1,1,1, 1,1,0,
-                  0,1,1,1,1, 1,1,1,0,5, 5,0,1,1,1, 1,1,0,
-                  0,1,1,1,0, 0,0,1,0,0, 0,0,1,1,1, 1,1,0,
-                  0,1,1,0,0, 0,0,1,1,1, 1,1,1,1,1, 1,1,0,
+                  7,7,1,1,1, 1,1,1,0,5, 5,0,1,1,1, 1,1,0,
+                  7,7,1,1,1, 1,1,1,0,5, 5,0,1,1,1, 1,1,0,
+                  7,7,1,1,6, 6,6,1,0,0, 0,0,1,1,1, 1,1,0,
+                  0,1,1,6,6, 6,6,1,1,1, 1,1,1,1,1, 1,1,0,
                   
-                  0,1,1,0,0, 0,0,1,1,1, 1,1,1,1,1, 1,1,0,
-                  0,4,1,1,0, 0,0,1,1,1, 1,1,1,1,1, 1,1,0,
+                  0,1,1,6,6, 6,6,1,1,1, 1,1,1,1,1, 1,1,0,
+                  0,4,1,1,6, 6,6,1,1,1, 1,1,1,1,1, 1,1,0,
                   0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,
                 ]
 
@@ -260,7 +260,40 @@ class Game2ViewController: UIViewController {
             }else if(a>305&&a<324){
                 labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_right")!)
                 labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_right2")!)
-            }else if(a>=238&&a<=240){
+            //池
+            }else if(a==41){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_upperleft")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_upperleft2")!)
+            }else if(a>=42&&a<=44||a==172){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_left")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_left2")!)
+            }else if(a==95||a==242){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_upperright")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_upperright2")!)
+            }else if(a==96||a==97||a==243||a==244){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_right")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_right2")!)
+            }else if(a==45||a==173){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_lowerleft")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_lowerleft2")!)
+            }else if(a==245){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_lowerright")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_lowerright2")!)
+            }else if(a%18==5||a%18==8){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_top")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_top2")!)
+            }else if(a%18==9||a%18==11){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_bottom")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_bottom2")!)
+            }else{
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_rf")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_rf2")!)
+            }
+        }else if(number[a]==5){
+            labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake")!)
+            labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake2")!)
+        }else if(number[a]==6){
+            if(a>=238&&a<=240){
             //テント1
                 labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-235+3*(a-238))")!)
                 labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent\(a-235+3*(a-238))_2")!)
@@ -298,38 +331,15 @@ class Game2ViewController: UIViewController {
             }else if(a==101){
                 labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent2")!)
                 labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "tent2_2")!)
-            //池
-            }else if(a==41){
-                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_upperleft")!)
-                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_upperleft2")!)
-            }else if(a>=42&&a<=44||a==172){
-                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_left")!)
-                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_left2")!)
-            }else if(a==95||a==242){
-                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_upperright")!)
-                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_upperright2")!)
-            }else if(a==96||a==97||a==243||a==244){
-                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_right")!)
-                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_right2")!)
-            }else if(a==45||a==173){
-                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_lowerleft")!)
-                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_lowerleft2")!)
-            }else if(a==245){
-                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_lowerright")!)
-                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_lowerright2")!)
-            }else if(a%18==5||a%18==8){
-                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_top")!)
-                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_top2")!)
-            }else if(a%18==9||a%18==11){
-                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_bottom")!)
-                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake_bottom2")!)
-            }else{
-                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_rf")!)
-                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "grass_rf2")!)
             }
-        }else if(number[a]==5){
-            labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake")!)
-            labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "lake2")!)
+        }else if(number[a]==7){
+            if(a%18==0){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "laundry\((a-180)/18)")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "laundry\((a-180)/18)_2")!)
+            }else if(a%18==1){
+                labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "laundry\((a-1)/18-7)")!)
+                labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "laundry\((a-1)/18-7)_2")!)
+            }
         }else{
             number[a]=1
             //橋
@@ -337,19 +347,19 @@ class Game2ViewController: UIViewController {
                 labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "bridge")!)
                 labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "bridge2")!)
             //地面
-            }else if(a==138){
+            }else if(a==138||a==110){
                 labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground_upperleft")!)
                 labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground_upperleft2")!)
-            }else if(a==156||a==211){
+            }else if(a==156||a==229||a==218){
                 labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground_upperright")!)
                 labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground_upperright2")!)
-            }else if(a==141){
+            }else if(a==142||a==113||a==168){
                 labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground_lowerleft")!)
                 labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground_lowerleft2")!)
-            }else if(a==213){
+            }else if(a==232||a==222){
                 labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground_lowerright")!)
                 labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground_lowerright2")!)
-            }else if(a>=139&&a<=140||a>=157&&a<=159||a>=175&&a<=177||a>=193&&a<=195||a>=211&&a<=212){
+            }else if(a>=139&&a<=141||a>=157&&a<=160||a>=175&&a<=178||a>=193&&a<=196||a>=211&&a<=214||a>=230&&a<=231||a>=111&&a<=112||a>=128&&a<=131||a>=146&&a<=149||a>=164&&a<=167||a>=182&&a<=186||a>=200&&a<=204||a>=219&&a<=221){
                 labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground")!)
                 labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "ground2")!)
             }else{
@@ -418,4 +428,5 @@ class Game2ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 }
+
 
