@@ -165,7 +165,7 @@ class Game2ViewController: UIViewController {
         showCharacter()
     }
     //POST
-    func doPost(id:Int, num:Int){
+    func doPost(id:Int, num:Int, tag:Int){
         //URLを設定
         guard let req_url = URL(string: "http://xr03.tsuda.ac.jp:8080/Test/TestServlet")
             else{return}
@@ -176,7 +176,7 @@ class Game2ViewController: UIViewController {
         //POSTを指定
         req.httpMethod = "POST"
         //POSTするデータをBODYとして設定
-        req.httpBody = "test=\(id)\(num)".data(using: .utf8)
+        req.httpBody = "test=\(id),\(num),\(tag),".data(using: .utf8)
         //sessionの作成
         let session = URLSession(configuration: .default,delegate: nil, delegateQueue: OperationQueue.main)
         //print("sessionの作成")
@@ -191,47 +191,34 @@ class Game2ViewController: UIViewController {
     func doGet(){
         URLSession.shared.dataTask(with: URL(string: "http://xr03.tsuda.ac.jp:8080/Test/TestServlet")!) { [self] data, response, error in
             guard let d = data, let s = String(data: d, encoding: .utf8) else { return }
-        //string->int
-            var n=0
-            var thisid=0
-            for num in s {
-                print("\(n): \(num)")
-                if(n==1||n==2||n==3||n==4){
-                    if let intValue = num.wholeNumberValue {
-                        //print("Value is \(intValue)")
-                        if(n==1){
-                            thisid=intValue
-                        }else if(n==2){
-                            if(thisid==1){
-                                ex=intValue
-                                print(ex)
-                            }else if(thisid==2){
-                                ex2=intValue
-                                print(ex2)
-                            }else if(thisid==3){
-                                ex3=intValue
-                                print(ex3)
-                            }
-                        }else if(n==3||n==4){
-                            if(thisid==1){
-                                ex*=10
-                                ex+=intValue
-                                print("ex:\(ex)")
-                            }else if(thisid==2){
-                                ex2*=10
-                                ex2+=intValue
-                                print("ex2:\(ex2)")
-                            }else if(thisid==3){
-                                ex3*=10
-                                ex3+=intValue
-                                print("ex3\(ex3)")
-                            }
-                        }
-                    } else {
-                        print("Not an integer")
-                    }
-                }
-                n+=1;
+            let str:String = s
+            print(s)
+            // 取得したデータを,で分割する
+            let arr:[String] = str.components(separatedBy: ",")
+            //arr[0]: id, arr[1]: 配列番号, arr[2]: プレーヤーの歩いている向き
+            let id:Int = Int(arr[0])!//string→int
+            print("id:\(id)")
+            let num:Int = Int(arr[1])!//string→int
+            print("num:\(num)")
+            switch id{
+                case 1:
+                    ex1=num
+                case 2:
+                    ex2=num
+                case 3:
+                    ex3=num
+                default: break
+            }
+            let tag:Int = Int(arr[2])!//string→int
+            print("tag:\(tag)")
+            switch id{
+                case 1:
+                    tag1=tag
+                case 2:
+                    tag2=tag
+                case 3:
+                    tag3=tag
+                default: break
             }
         }.resume()
     }
