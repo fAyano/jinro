@@ -13,24 +13,37 @@ class Game2ViewController: UIViewController {
     @IBOutlet weak var rightbutton: UIButton!
     @IBOutlet weak var downbutton: UIButton!
     @IBOutlet weak var leftbutton: UIButton!
-    
+   
     var updateLabelCancellable: AnyCancellable?//タイマー
-    var id:Int = 0//自分のid
-    var id1:Int = 1
-    var id2:Int = 2
-    var id3:Int = 3
-    var ex:Int = 19//１つ前のプレイヤーの配列番号
-    var ex2:Int = 33
+    //--id--
+    var id:Int = 0//自分
+    var id1:Int = 1//プレーヤー1
+    var id2:Int = 2//プレーヤー2
+    var id3:Int = 3//プレーヤー3
+    //----
+    //--それぞれのプレーヤーの一つ前の配列番号--
+    var ex1:Int = 19
+    var ex2:Int = 51
     var ex3:Int = 289
+    //----
+    //--それぞれのプレーヤーの歩いている向き--
+    var tag1:Int=3
+    var tag2:Int=1
+    var tag3:Int=3
+    //----
+    //--時間--
+    var time1:Int=1
+    var time2:Int=1
+    var time3:Int=1
+    //----
     var ls:Int = 40//ラベルのサイズ
     var t:Int = 1//データ通信の回数
-    //-----
-    var labelArray: [UILabel] = []
-    var labelArray2: [UILabel] = []
-    var number: [Int] = []
+    //---配列--
+    var labelArray: [UILabel] = []//メイン画面のキャラクターを表示するために使用
+    var labelArray2: [UILabel] = []//全体画面
+    var number: [Int] = []//ゲームの移動できる範囲を決めるときに使用
     //-----
     override func viewDidLoad() {
-        
         // ---Combineでタイマーを作る---
         updateLabelCancellable = Timer
             .publish(every: 0.5, on: .main, in: .common)
@@ -38,21 +51,21 @@ class Game2ViewController: UIViewController {
             .sink(receiveValue: { [self] (date) in
                 if(t==1){
                     //位置情報の初期化
-                    doPost(id:id1,num:ex)
-                    doPost(id:id2,num:ex2)
-                    doPost(id:id3,num:ex3)
+                    doPost(id:id1,num:ex1,tag:tag1)
+                    doPost(id:id2,num:ex2,tag:tag2)
+                    doPost(id:id3,num:ex3,tag:tag3)
                 }
                 doGet()
                 for i in 0..<324 {
                     chooseColor(a:i)
                 }
-                if(ex==0){
+                if(ex1==0){
                     self.performSegue(withIdentifier: "toLastVC2", sender: nil)
                 }
-                number[ex]=2
+                number[ex1]=2
                 number[ex2]=3
                 number[ex3]=4
-                chooseColor2(a:ex)
+                chooseColor2(a:ex1)
                 chooseColor2(a:ex2)
                 chooseColor2(a:ex3)
                 if(t>1){
@@ -66,27 +79,27 @@ class Game2ViewController: UIViewController {
         super.viewDidLoad()
         var a:Int = 0
         
-        //背景 0→壁, 1→動ける範囲, 2→プレイヤー, 3→プレイヤー2, 4→プレイヤー3, 5→池, 6→テント, 7→物干し竿
+        //歩けない所→0, 歩けるところ→1, プレイヤー1(人狼)→2, プレーヤー2(市民)→3, プレーヤー3(市民)→4, 鍵→5, 冠→6
         number = [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,
-                  0,2,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 3,1,0,
-                  0,1,1,1,1, 0,0,0,0,0, 1,1,1,1,1, 1,1,0,
-                  0,1,1,1,1, 0,5,5,5,0, 1,1,6,6,6, 1,1,0,
-                  0,1,1,1,1, 0,5,5,5,0, 1,6,6,6,6, 1,1,0,
+                  0,2,1,1,1, 1,1,1,6,0, 0,0,0,0,0, 0,0,0,
+                  0,1,1,1,0, 0,0,1,1,0, 0,0,0,0,1, 1,3,0,
+                  0,1,1,0,0, 0,0,1,1,0, 0,0,0,0,1, 1,1,0,
+                  0,1,1,0,0, 0,0,1,1,0, 0,0,0,0,1, 1,1,0,
                   
-                  0,1,1,1,1, 0,0,0,5,0, 1,6,6,6,6, 1,1,0,
-                  0,1,1,1,1, 1,1,1,0,0, 1,1,6,6,6, 1,1,0,
-                  0,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,0,
-                  0,1,1,1,1, 1,1,1,0,0, 1,1,1,1,1, 1,1,0,
-                  0,1,1,1,1, 1,1,1,0,5, 0,0,1,1,1, 1,1,0,
+                  0,1,1,1,0, 0,0,1,1,0, 0,0,0,0,1, 1,1,0,
+                  0,1,1,1,1, 1,1,1,0,0, 0,0,0,0,0, 1,1,0,
+                  0,1,0,1,0, 0,1,1,1,1, 1,1,1,1,1, 1,1,0,
+                  0,1,0,1,0, 0,1,1,0,0, 0,0,0,0,0, 1,1,0,
+                  0,1,1,1,1, 1,1,1,1,0, 0,0,0,0,0, 1,1,0,
                   
-                  0,1,1,1,1, 1,1,1,0,5, 5,0,1,1,1, 1,1,0,
-                  7,7,1,1,1, 1,1,1,0,5, 5,0,1,1,1, 1,1,0,
-                  7,7,1,1,1, 1,1,1,0,5, 5,0,1,1,1, 1,1,0,
-                  7,7,1,1,6, 6,6,1,0,0, 0,0,1,1,1, 1,1,0,
-                  0,1,1,6,6, 6,6,1,1,1, 1,1,1,1,1, 1,1,0,
+                  0,1,0,1,1, 1,1,1,1,0, 0,0,0,0,0, 1,1,0,
+                  0,1,0,1,1, 0,0,0,0,0, 0,0,0,0,0, 1,1,0,
+                  0,1,1,1,1, 0,0,0,0,0, 0,0,0,0,1, 1,1,0,
+                  0,1,0,1,1, 0,0,0,0,0, 0,0,0,0,1, 5,1,0,
+                  0,1,1,1,1, 0,0,0,0,1, 1,1,1,1,1, 0,0,0,
                   
-                  0,1,1,6,6, 6,6,1,1,1, 1,1,1,1,1, 1,1,0,
-                  0,4,1,1,6, 6,6,1,1,1, 1,1,1,1,1, 1,1,0,
+                  0,1,1,1,1, 0,0,0,0,1, 1,1,1,1,0, 0,0,0,
+                  0,4,1,1,1, 0,0,0,0,1, 1,1,1,1,1, 0,0,0,
                   0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,
                 ]
 
@@ -98,6 +111,7 @@ class Game2ViewController: UIViewController {
                 label2.frame = CGRect(x: 27+8*x, y: y*8+550, width: 8, height: 8)
                 //ラベルの位置を確認
                 //label.text = String("\(x),\(y)")
+                //label.text = String("\((x-1)*18+y-1)")
                 label.textAlignment = NSTextAlignment.center
                 label.textColor = UIColor.white
                 //ラベルを配列に入れる
@@ -108,6 +122,7 @@ class Game2ViewController: UIViewController {
                 a+=1
             }
         }
+        //1/1変更
         showBoard()
         showCharacter()
     }
@@ -116,48 +131,48 @@ class Game2ViewController: UIViewController {
         //上
         if(sender.tag==1){
             if(id==2){
-                if(number[ex2-1]==1){
-                    doPost(id:id,num:ex2-1)
+                if(number[ex2-1]==1||number[ex2-1]==5){
+                    doPost(id:id,num:ex2-1,tag:sender.tag)
                 }
             }else{
-                if(number[ex3-1]==1){
-                    doPost(id:id,num:ex3-1)
+                if(number[ex3-1]==1||number[ex3-1]==6){
+                    doPost(id:id,num:ex3-1,tag:sender.tag)
                 }
             }
         }
         //右
         if(sender.tag==2){
             if(id==2){
-                if(number[ex2+18]==1){
-                    doPost(id:id,num:ex2+18)
+                if(number[ex2+18]==1||number[ex2+18]==5){
+                    doPost(id:id,num:ex2+18,tag:sender.tag)
                 }
             }else{
-                if(number[ex3+18]==1){
-                    doPost(id:id,num:ex3+18)
+                if(number[ex3+18]==1||number[ex3+18]==6){
+                    doPost(id:id,num:ex3+18,tag:sender.tag)
                 }
             }
         }
         //下
         if(sender.tag==3){
             if(id==2){
-                if(number[ex2+1]==1){
-                    doPost(id:id,num:ex2+1)
+                if(number[ex2+1]==1||number[ex2+1]==5){
+                    doPost(id:id,num:ex2+1,tag:sender.tag)
                 }
             }else{
-                if(number[ex3+1]==1){
-                    doPost(id:id,num:ex3+1)
+                if(number[ex3+1]==1||number[ex3+1]==6){
+                    doPost(id:id,num:ex3+1,tag:sender.tag)
                 }
             }
         }
         //左
         if(sender.tag==4){
             if(id==2){
-                if(number[ex2-18]==1){
-                    doPost(id:id,num:ex2-18)
+                if(number[ex2-18]==1||number[ex2-18]==5){
+                    doPost(id:id,num:ex2-18,tag:sender.tag)
                 }
             }else{
-                if(number[ex3-18]==1){
-                    doPost(id:id,num:ex3-18)
+                if(number[ex3-18]==1||number[ex3-18]==6){
+                    doPost(id:id,num:ex3-18,tag:sender.tag)
                 }
             }
         }
@@ -224,25 +239,73 @@ class Game2ViewController: UIViewController {
     }
     //色を決める
     func chooseColor(a:Int){
-        if(number[a] != 0){
+        if(number[a]==5){
+            labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "key")!)
+        }else if(number[a]==6){
+            labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "crown")!)
+        }else if(number[a] != 0 ){
             number[a]=1
+            labelArray[a].backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.0)//背景を透明にする
+            labelArray2[a].backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.0)
         }
-        labelArray[a].backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.0)//背景を透明にする
-        labelArray2[a].backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.0)
     }
     func chooseColor2(a:Int){
         if(number[a]==2){
-            labelArray[a].backgroundColor = UIColor.blue
-            labelArray2[a].backgroundColor = UIColor.blue
+            switch tag1 {
+                case 1:
+                    labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "character1_back\(time1)")!)
+                case 2:
+                    labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "character1_right\(time1)")!)
+                case 3:
+                    labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "character1_front\(time1)")!)
+                case 4:
+                    labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "character1_left\(time1)")!)
+                default: break
+            }
+            if(time1==1){
+                time1=2
+            }else{
+                time1=1
+            }
+            labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "character1")!)
         }else if(number[a]==3){
-            labelArray[a].backgroundColor = UIColor.red
-            labelArray2[a].backgroundColor = UIColor.red
+            switch tag2 {
+                case 1:
+                    labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "character2_back\(time2)")!)
+                case 2:
+                    labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "character2_right\(time2)")!)
+                case 3:
+                    labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "character2_front\(time2)")!)
+                case 4:
+                    labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "character2_left\(time2)")!)
+                default: break
+            }
+            if(time2==1){
+                time2=2
+            }else{
+                time2=1
+            }
+            labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "character2")!)
         }else if(number[a]==4){
-            labelArray[a].backgroundColor = UIColor.green
-            labelArray2[a].backgroundColor = UIColor.green
+            switch tag3 {
+                case 1:
+                    labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "character3_back\(time3)")!)
+                case 2:
+                    labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "character3_right\(time3)")!)
+                case 3:
+                    labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "character3_front\(time3)")!)
+                case 4:
+                    labelArray[a].backgroundColor = UIColor(patternImage: UIImage(named: "character3_left\(time3)")!)
+                default: break
+            }
+            if(time3==1){
+                time3=2
+            }else{
+                time3=1
+            }
+            labelArray2[a].backgroundColor = UIColor(patternImage: UIImage(named: "character3")!)
         }
     }
-    
     //どの位置からメイン画面に表示するかを決める
     func show() -> Int{
         var s:Int = 0//メイン画面の左上に表示する配列番号
