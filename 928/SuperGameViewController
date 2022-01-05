@@ -1,4 +1,4 @@
-```
+```Swift
 import UIKit
 import Combine//タイマーを作る
 
