@@ -2,7 +2,7 @@
 //  AbstractGameViewController.swift
 //  928
 //
-//  Created by 藤澤彩乃 on 2022/01/04.
+//  2022/01/04.
 //
 
 import UIKit
@@ -19,9 +19,11 @@ class SuperGameViewController: UIViewController {
     var ex:[Int] = [19,51,289]//それぞれのプレーヤーの一つ前の配列番号
     var tag:[Int] = [3,1,3]//それぞれのプレーヤーの歩いている向き
     var time: [Int] = [1,1,1]
+    var point:[Int] = [0,0,0]
     //-----
     var ls:Int = 40//ラベルのサイズ
     var t:Int = 1//データ通信の回数
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,30 +32,35 @@ class SuperGameViewController: UIViewController {
             .publish(every: 0.5, on: .main, in: .common)
             .autoconnect()
             .sink(receiveValue: { [self] (date) in
-//                if(t==1){
-//                    //位置情報の初期化
-//                    doPost(id:id[0],num:ex[0],tag:tag[0])
-//                    doPost(id:id[1],num:ex[1],tag:tag[1])
-//                    doPost(id:id[2],num:ex[2],tag:tag[2])
-//                }
-                doGet()
-                for i in 0..<324 {
-                    setBoard(a:i)
+                if(t==1){
+                    //位置情報の初期化
+                    doPost(id:id[0],num:ex[0],tag:tag[0],point:point[0])
+                    doPost(id:id[1],num:ex[1],tag:tag[1],point:point[1])
+                    doPost(id:id[2],num:ex[2],tag:tag[2],point:point[2])
+                }else{
+                    doGet()
+                    for i in 0..<324 {
+                        setBoard(a:i)
+                    }
+                    number[ex[0]]=2
+                    number[ex[1]]=3
+                    number[ex[2]]=4
+                    setCharacter(a:ex[0],b:0)
+                    setCharacter(a:ex[1],b:1)
+                    setCharacter(a:ex[2],b:2)
+                    showBoard()
+                    showCharacter()
                 }
 //                if(ex1==0){
 //                    self.performSegue(withIdentifier: "toLastVC2", sender: nil)
 //                }
-                number[ex[0]]=2
-                number[ex[1]]=3
-                number[ex[2]]=4
-                setCharacter(a:ex[0],b:0)
-                setCharacter(a:ex[1],b:1)
-                setCharacter(a:ex[2],b:2)
-                if(t>1){
-                    showBoard()
-                    showCharacter()
-                }
                 t+=1
+                
+                //抽象メソッド
+                if let obj = self as? AbstractClass {
+                    obj.task()
+                }
+                
             })
         //-------
     
@@ -99,34 +106,33 @@ class SuperGameViewController: UIViewController {
                 labelArray.append(label)
                 labelArray2.append(label2)
                 //色を決める
-                setBoard(a:a)
+                //setBoard(a:a)
                 a+=1
             }
         }
         showBoard()
         showCharacter()
     }
-    func btn(sender:UIButton, id:Int, ex:Int){
+    func btn(sender:UIButton, id:Int, ex:Int, point:Int){
         //上
         if(sender.tag==1&&number[ex-1]==1){
-            doPost(id:id,num:ex-1,tag:sender.tag)
+            doPost(id:id,num:ex-1,tag:sender.tag,point:point)
         }
         //右
         else if(sender.tag==2&&number[ex+18]==1){
-            doPost(id:id,num:ex+18,tag:sender.tag)
+            doPost(id:id,num:ex+18,tag:sender.tag,point:point)
         }
         //下
         else if(sender.tag==3&&number[ex+1]==1){
-            doPost(id:id,num:ex+1,tag:sender.tag)
+            doPost(id:id,num:ex+1,tag:sender.tag,point:point)
         }
         //左
         else if(sender.tag==4&&number[ex-18]==1){
-            doPost(id:id,num:ex-18,tag:sender.tag)
+            doPost(id:id,num:ex-18,tag:sender.tag,point:point)
         }
-        
     }
     //POST
-    func doPost(id:Int, num:Int, tag:Int){
+    func doPost(id:Int, num:Int, tag:Int, point:Int){
         //URLを設定
         guard let req_url = URL(string: "http://xr03.tsuda.ac.jp:8080/Test/TestServlet")
             else{return}
@@ -137,7 +143,7 @@ class SuperGameViewController: UIViewController {
         //POSTを指定
         req.httpMethod = "POST"
         //POSTするデータをBODYとして設定
-        req.httpBody = "test=\(id),\(num),\(tag),".data(using: .utf8)
+        req.httpBody = "test=\(id),\(num),\(tag),\(point),".data(using: .utf8)
         //sessionの作成
         let session = URLSession(configuration: .default,delegate: nil, delegateQueue: OperationQueue.main)
         //print("sessionの作成")
@@ -156,24 +162,31 @@ class SuperGameViewController: UIViewController {
             print(s)
             // 取得したデータを,で分割する
             let arr:[String] = str.components(separatedBy: ",")
-            //arr[0]: id, arr[1]: 配列番号, arr[2]: プレーヤーの歩いている向き
+            //arr[0]: id, arr[1]: 配列番号, arr[2]: プレーヤーの歩いている向き, arr[3]: ポイント
             let id:Int = Int(arr[0])!//string→int
             print("id:\(id)")
             let num:Int = Int(arr[1])!//string→int
             print("num:\(num)")
             let thistag:Int = Int(arr[2])!//string→int
             print("tag:\(thistag)")
-            switch id{
-                case 1:
-                    ex[0]=num
-                    tag[0]=thistag
-                case 2:
-                    ex[1]=num
-                    tag[1]=thistag
-                case 3:
-                    ex[2]=num
-                    tag[2]=thistag
-                default: break
+            let thispoint:Int = Int(arr[3])!//string→int
+            print("point:\(thispoint)")
+//            switch id{
+//                case 1:
+//                    ex[0]=num
+//                    tag[0]=thistag
+//                case 2:
+//                    ex[1]=num
+//                    tag[1]=thistag
+//                case 3:
+//                    ex[2]=num
+//                    tag[2]=thistag
+//                default: break
+//            }
+            ex[id-1]=num
+            tag[id-1]=thistag
+            if(point[id-1]<thispoint){
+                point[id-1]=thispoint
             }
         }.resume()
     }
@@ -262,4 +275,12 @@ class SuperGameViewController: UIViewController {
         view.addSubview(imageView)
         //----
     }
+    
+    //func setpoint()
+}
+
+
+//プロトコルの実装
+protocol AbstractClass: class{
+    func task()
 }
