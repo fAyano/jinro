@@ -6,7 +6,6 @@
 //
 
 import UIKit
-//import Combine//タイマーを作る
 
 class Game2ViewController: SuperGameViewController {
     @IBOutlet weak var upbutton: UIButton!
@@ -16,8 +15,6 @@ class Game2ViewController: SuperGameViewController {
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var item1: UIImageView!
     @IBOutlet weak var item2: UIImageView!
-    
-    //let GVC = AbstractGameViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,10 +112,6 @@ extension Game2ViewController: AbstractClass {
             default:break
             }
         }else{
-            print("ポイント1")
-            print(point[1])
-            print("ポイント2")
-            print(point[2])
             switch(point[1],point[2]){
             case(0,0):
                 let image1 = UIImage(named: "key3")
