@@ -6,7 +6,7 @@
 //
 
 import UIKit
-//import Combine//タイマーを作る
+
 
 class GameViewController: SuperGameViewController {
     @IBOutlet weak var upbutton: UIButton!
@@ -36,15 +36,15 @@ class GameViewController: SuperGameViewController {
         if(number[ex-19]==3||number[ex-18]==3||number[ex-17]==3||number[ex-1]==3||number[ex]==3||number[ex+1]==3||number[ex+17]==3||number[ex+18]==3||number[ex+19]==3){
             if(p==0||p==2){
                 p+=1
-                doPost(id:id,num:ex,tag:sender.tag,point:p)
+                //爆弾ボタンを押した時はキャラクターは移動しないのでtagは一つ前のtagをpostする
+                doPost(id:id,num:ex,tag:tag[0],point:p)
             }
         }else if(number[ex-19]==4||number[ex-18]==4||number[ex-17]==4||number[ex-1]==4||number[ex]==4||number[ex+1]==4||number[ex+17]==4||number[ex+18]==4||number[ex+19]==4){
             if(p==0||p==1){
                 p+=2
-                doPost(id:id,num:ex,tag:sender.tag,point:p)
+                doPost(id:id,num:ex,tag:tag[0],point:p)
             }
         }
-        //self.performSegue(withIdentifier: "toLastVC", sender: nil)
     }
 }
 
