@@ -24,7 +24,6 @@ class SuperGameViewController: UIViewController {
     var ls:Int = 40//ラベルのサイズ
     var t:Int = 1//データ通信の回数
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // ---Combineでタイマーを作る---
@@ -42,25 +41,27 @@ class SuperGameViewController: UIViewController {
                     for i in 0..<324 {
                         setBoard(a:i)
                     }
-                    number[ex[0]]=2
-                    number[ex[1]]=3
-                    number[ex[2]]=4
-                    setCharacter(a:ex[0],b:0)
-                    setCharacter(a:ex[1],b:1)
-                    setCharacter(a:ex[2],b:2)
+                    for i in 0..<3 {
+                        number[ex[i]]=i+2
+                        setCharacter(a:ex[i],b:i)
+                    }
                     showBoard()
                     showCharacter()
+                    //抽象メソッド
+                    if let obj = self as? AbstractClass {
+                        obj.task()
+                    }
+                    
                 }
-//                if(ex1==0){
-//                    self.performSegue(withIdentifier: "toLastVC2", sender: nil)
-//                }
+                //最終画面に移るか判定
+                if(point[0]==3||point[1]==1&&point[2]==1){
+                    if(myid==1){
+                        self.performSegue(withIdentifier: "toLastVC", sender: nil)
+                    }else{
+                        self.performSegue(withIdentifier: "toLastVC2", sender: nil)
+                    }
+                }
                 t+=1
-                
-                //抽象メソッド
-                if let obj = self as? AbstractClass {
-                    obj.task()
-                }
-                
             })
         //-------
     
@@ -105,13 +106,9 @@ class SuperGameViewController: UIViewController {
                 //ラベルを配列に入れる
                 labelArray.append(label)
                 labelArray2.append(label2)
-                //色を決める
-                //setBoard(a:a)
                 a+=1
             }
         }
-        showBoard()
-        showCharacter()
     }
     func btn(sender:UIButton, id:Int, ex:Int, point:Int){
         //上
@@ -171,18 +168,6 @@ class SuperGameViewController: UIViewController {
             print("tag:\(thistag)")
             let thispoint:Int = Int(arr[3])!//string→int
             print("point:\(thispoint)")
-//            switch id{
-//                case 1:
-//                    ex[0]=num
-//                    tag[0]=thistag
-//                case 2:
-//                    ex[1]=num
-//                    tag[1]=thistag
-//                case 3:
-//                    ex[2]=num
-//                    tag[2]=thistag
-//                default: break
-//            }
             ex[id-1]=num
             tag[id-1]=thistag
             if(point[id-1]<thispoint){
@@ -237,7 +222,7 @@ class SuperGameViewController: UIViewController {
         }
         return s
     }
-    //キャラクターを表示する
+    //ラベルを表示する
     func showCharacter() {
         //--全体画面を表示する--
         //配列に入ったラベルの表示
@@ -257,7 +242,7 @@ class SuperGameViewController: UIViewController {
         }
         //----
     }
-    //背景を表示する
+    //背景(imageView)を表示する
     func showBoard(){
         //--全体画面--
         let image2 = UIImage(named: "haikei2")!
@@ -275,10 +260,28 @@ class SuperGameViewController: UIViewController {
         view.addSubview(imageView)
         //----
     }
-    
-    //func setpoint()
+    //勝敗の結果の値渡し
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+        let LastVC = segue.destination as! LastViewController
+        if(point[0]==3){
+            if(myid==1){
+                LastVC.name="人狼"
+                LastVC.win = true
+            }else{
+                LastVC.name="市民"
+                LastVC.win = false
+            }
+        }else if(point[1]==1&&point[2]==1){
+            if(myid==2||myid==3){
+                LastVC.name="市民"
+                LastVC.win = true
+            }else{
+                LastVC.name="人狼"
+                LastVC.win = false
+            }
+        }
+    }
 }
-
 
 //プロトコルの実装
 protocol AbstractClass: class{
