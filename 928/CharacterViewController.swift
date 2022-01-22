@@ -37,16 +37,11 @@ class CharacterViewController: UIViewController {
                     if(id%3==1){
                         idLabel.text = "あなたは人狼です"
                         image.image = UIImage(named: "jinro")
-                        print("--------")
-                        print("id\(id)")
-                        print("--------")
                     }else{
                         idLabel.text = "あなたは市民です"
                         image.image = UIImage(named: "shimin")
-                        print("--------")
-                        print("id\(id)")
-                        print("--------")
                     }
+                    print("id\(id)")
                 }
             })
     }
@@ -54,44 +49,30 @@ class CharacterViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         if(id%3==1){
             let GameVC = segue.destination as! GameViewController
-            GameVC.id = id%3
+            GameVC.myid = 1
         }else if(id%3==2){
             let GameVC = segue.destination as! Game2ViewController
-            GameVC.id = id%3
+            GameVC.myid = 2
         }else if(id%3==0){
             let GameVC = segue.destination as! Game2ViewController
-            GameVC.id = 3
+            GameVC.myid = 3
         }
     }
     //GET
     func doGet(){
         URLSession.shared.dataTask(with: URL(string: "http://xr03.tsuda.ac.jp:8080/ID/IDServlet")!) { [self] data, response, error in
             guard let d = data, let s = String(data: d, encoding: .utf8) else { return }
-        //string->int
-            var n=0
-            for num in s {
-                print("\(n): \(num)")
-                if(n>=1&&n<=3){
-                    if let intValue = num.wholeNumberValue {
-                        if(n==1){
-                            id=intValue
-                        }else if(n==2){
-                            id*=10
-                            id+=intValue
-                            print(id)
-                        }else if(n==3){
-                            id*=10
-                            id+=intValue
-                            print(id)
-                        }
-                    } else {
-                        print("Not an integer")
-                    }
-                }
-                n+=1;
-            }
+            let str:String = s
+            print(s)
+            // 取得したデータを,で分割する
+            let arr:[String] = str.components(separatedBy: ",")
+            id = Int(arr[0])!//string→int
+            print("-------")                                                                                   
+            print("id:\(id)")
+            print("-------")                                                                                               
         }.resume()
     }
+    
     @IBAction func btnAction(sender: UIButton){
         if(id%3==1){
             self.performSegue(withIdentifier: "toGameVC", sender: nil)
