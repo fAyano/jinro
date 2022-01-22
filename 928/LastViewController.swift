@@ -8,12 +8,23 @@
 import UIKit
 
 class LastViewController: UIViewController {
-
+    var win:Bool = true//勝ち→true, 負け→false
+    var name:String = ""
     @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var imageView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        if(win==true){
+            messageLabel.text = "\(name)の勝ち!おめでとう!"
+            let image = UIImage(named: "win")
+            imageView.image = image
+        }else{
+            messageLabel.text = "\(name)の負け、、😢"
+            let image = UIImage(named: "lose")
+            imageView.image = image
+        }
     }
     @IBAction func toTopButtonAction(_sender: Any){
         self.presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true)
