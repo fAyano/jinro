@@ -27,9 +27,9 @@ public class IDServlet extends HttpServlet {
     int id=0;
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    PrintWriter out= response.getWriter();
-        out.println();
+       // out.println();
         setid(id);
-        out.println(getid());
+        out.println(getid()+",");
     }
     int getid(){
 		return id;
